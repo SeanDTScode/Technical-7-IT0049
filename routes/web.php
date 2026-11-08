@@ -1,19 +1,18 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [WelcomeController::class, 'index'])
-    ->name('welcome');
-
-Route::get('/tasks', [TaskController::class, 'index'])
-    ->name('tasks.index');
-
-Route::get('/profile', [ProfileController::class, 'index'])
-    ->name('profile');
+Route::get('/', [PageController::class, 'home'])
+    ->name('home');
 
 Route::get('/about', [PageController::class, 'about'])
     ->name('about');
+
+Route::resource('customers', CustomerController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update']);
+
+Route::resource('users', UserController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update']);

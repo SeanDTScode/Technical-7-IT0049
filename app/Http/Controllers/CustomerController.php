@@ -3,13 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $customers = Customer::orderBy('full_name')->get();
 
         return view('customers.index', compact('customers'));
+    }
+
+    public function create(): View
+    {
+        return view('customers.create');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'full_name' => ['required', 'string', 'max:100'],
+            'email'     => ['required', 'email', 'max:100'],
+            'phone'     => ['nullable', 'string', 'max:20'],
+        ]);
+
+        $validated['created_at'] = now();
+
+        Customer::create($validated);
+
+        return to_route('customers.index')
+            ->with('success', 'Customer created successfully.');
+    }
+
+    public function edit(Customer $customer): View
+    {
+        return view('customers.edit', compact('customer'));
+    }
+
+    public function update(
+        Request $request,
+        Customer $customer
+    ): RedirectResponse {
+        $validated = $request->validate([
+            'full_name' => ['required', 'string', 'max:100'],
+            'email'     => ['required', 'email', 'max:100'],
+            'phone'     => ['nullable', 'string', 'max:20'],
+        ]);
+
+        $customer->update($validated);
+
+        return to_route('customers.index')
+            ->with('success', 'Customer updated successfully.');
     }
 }

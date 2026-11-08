@@ -9,16 +9,9 @@ class User extends Model
     protected $fillable = [
         'username',
         'full_name',
-        'email',
+        'avatar',
         'created_at',
     ];
 
     public $timestamps = false;
-
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-        ];
-    }
 }
