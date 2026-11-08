@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('username', 50)->unique();
             $table->string('full_name', 100);
+            $table->string('email', 100);
             $table->dateTime('created_at');
         });
     }
